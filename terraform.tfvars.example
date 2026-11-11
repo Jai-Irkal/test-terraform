@@ -1,0 +1,3 @@
+aws_region         = "us-east-1"
+ecr_repository_name = "terraform-learning-demo"
+environment        = "development"
