@@ -1,0 +1,51 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ManageTerraformLearningECR",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:CreateRepository",
+        "ecr:DeleteRepository",
+        "ecr:DescribeRepositories",
+        "ecr:ListTagsForResource",
+        "ecr:TagResource",
+        "ecr:UntagResource",
+        "ecr:PutImageTagMutability",
+        "ecr:PutImageScanningConfiguration"
+      ],
+      "Resource": "arn:aws:ecr:us-east-1:422169036124:repository/terraform-learning-demo"
+    },
+    {
+      "Sid": "TerraformStateBucketAccess",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetBucketLocation",
+        "s3:GetBucketVersioning",
+        "s3:ListBucket"
+      ],
+      "Resource": "arn:aws:s3:::terraform-state-422169036124-ipgsm-learning",
+      "Condition": {
+        "StringLike": {
+          "s3:prefix": [
+            "terraform-learning/*",
+            "terraform-learning/"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "TerraformStateFileAccess",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::terraform-state-422169036124-ipgsm-learning/terraform-learning/terraform.tfstate",
+        "arn:aws:s3:::terraform-state-422169036124-ipgsm-learning/terraform-learning/terraform.tfstate.tflock"
+      ]
+    }
+  ]
+}

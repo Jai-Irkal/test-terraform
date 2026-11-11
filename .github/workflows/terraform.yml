@@ -1,3 +1,4 @@
+
 name: Terraform CI
 
 on:
@@ -10,11 +11,16 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   terraform:
-    name: Terraform Validation
+    name: Terraform Validation and Plan
     runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: us-east-1
+      TF_VAR_environment: development
 
     steps:
       - name: Checkout repository
@@ -23,11 +29,23 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::422169036124:role/GitHubActionsTerraformRole
+          aws-region: us-east-1
+
+      - name: Verify AWS Identity
+        run: aws sts get-caller-identity
+
       - name: Terraform Format Check
         run: terraform fmt -check -recursive
 
       - name: Terraform Initialize
-        run: terraform init -backend=false
+        run: terraform init
 
       - name: Terraform Validate
         run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -input=false
