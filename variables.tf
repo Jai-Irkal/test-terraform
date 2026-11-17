@@ -27,3 +27,9 @@ variable "s3_environment" {
   type        = string
   default     = "development"
 }
+
+variable "lookup_existing_ecr" {
+  description = "Whether to look up an existing ECR repository"
+  type        = bool
+  default     = true
+}

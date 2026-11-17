@@ -7,3 +7,9 @@ variable "environment" {
   description = "Environment name"
   type        = string
 }
+
+variable "image_tag_mutability" {
+  description = "Whether image tags can be overwritten"
+  type        = string
+  default     = "MUTABLE"
+}
